@@ -1,0 +1,34 @@
+import re
+import csv
+def register():
+  with open("users.csv",mode = 'a',newline="") as f:
+    writer = csv.writer(f,delimiter=", ")
+    email = input("enter your email: ")
+    password1 = input("enter your password: ")
+    password2 = input("confirm your password: ")
+
+    pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
+    reg = "[A-Za-z0-9@#$%^&+=]{8,}"
+
+    if password1==password2 and 5<len(password1)<16 :
+      if re.match(pat,email) and re.search(re.compile(reg),password1):
+              writer.writerow([email,password1])
+              print("Registration is successful")
+              login()
+      else:
+              print("Email is not correct")
+              register()
+    else:
+      print("Password is not correct")
+      register()
+
+def login():
+  email = input("enter your mail:")
+  password = input("enter your password:")
+  with open("users.csv",mode = 'r') as f:
+      reader = csv.reader(f,delimiter = " ")
+      for row in reader:
+        if row == [email,password]:
+            print("you are logged in")
+            return True
+      print("Incorrect email or password")    
